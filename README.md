@@ -20,5 +20,9 @@ Current supported Minecraft version: **Minecraft 1.10**
 3. Run the build.gradle file from this repository
 4. Follow the instructions on using the mod with your compiled .jar file
 
+#Credits
+This mod uses the [Simple Slack API Library](https://github.com/Ullink/simple-slack-api/blob/master/README.md)
+Thanks to Ullink for making that library!
+
 #License
 This mod is licensed under the [MIT License](https://github.com/MrLittleKitty/Snack/blob/master/license.txt)
