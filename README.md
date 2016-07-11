@@ -3,6 +3,9 @@ Snack --- A Minecraft Forge mod that posts Snitch messages to Slack
 
 Current supported Minecraft version: **Minecraft 1.10**
 
+#Builds
+Minecraft 1.10 --- [Mediafire](https://www.mediafire.com/?17y6w8pj5b83n15)
+
 #How to use this mod
 1. Get a Slack session token. [This article is helpful.](https://www.fullstackpython.com/blog/build-first-slack-bot-python.html)
 2. Put the compiled .jar for this mod file into your Minecraft mods folder
