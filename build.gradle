@@ -1,0 +1,84 @@
+
+// For those who want the bleeding edge
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+    }
+}
+
+plugins {
+	id "com.github.johnrengelman.shadow" version "1.2.3"
+}
+
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+version = "1.10-1.0.0"
+group= "com.gmail.nuclearcat1337.snack" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "Snack"
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+minecraft {
+    version = "1.10-12.18.0.1986-1.10.0"
+    runDir = "run"
+    
+    // the mappings can be changed at any time, and must be in the following format.
+    // snapshot_YYYYMMDD   snapshot are built nightly.
+    // stable_#            stables are built at the discretion of the MCP team.
+    // Use non-default mappings at your own risk. they may not allways work.
+    // simply re-run your setup task after changing the mappings to update your workspace.
+    mappings = "snapshot_20160518"
+    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+}
+
+repositories
+{
+	maven { url "https://jitpack.io" }
+}
+
+dependencies {
+	compile 'com.github.Ullink:simple-slack-api:master-SNAPSHOT'
+}
+
+processResources
+{
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+        
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+	
+	from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+}
+
+shadowJar 
+{
+	classifier = ""
+	relocate "org.slf4j", "com.gmail.nuclearcat1337.repack.org.slf4j"
+
+	dependencies {
+		include(dependency("com.github.Ullink:simple-slack-api:master-SNAPSHOT"))
+	}
+}
+
+reobf { shadowJar { mappingType = "SEARGE" } }
+tasks.reobfShadowJar.mustRunAfter shadowJar

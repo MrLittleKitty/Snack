@@ -1,0 +1,16 @@
+[
+{
+  "modid": "snack",
+  "name": "Snack",
+  "description": "A mod that sends snitch alerts to Slack",
+  "version": "1.0.0",
+  "mcversion": "1.10",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Mr_Little_Kitty"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
