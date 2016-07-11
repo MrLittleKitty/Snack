@@ -61,6 +61,9 @@ public class Snack
 
             //Open the connection
             session.connect();
+
+            //Send a message in the slack channel to alert that we've started up the mod
+            sendSlackMessage("A client using Snack has started and connected to this channel.");
         }
         catch (IOException e)
         {
@@ -92,11 +95,7 @@ public class Snack
             {
                 try
                 {
-                    //Get the channel that we are supposed to send messages to
-                    SlackChannel slackChannel = session.findChannelByName(channel);
-
-                    //Send the alert message to that channel
-                    session.sendMessage(slackChannel,message);
+                    sendSlackMessage(message);
                 }
                 catch(Exception e)
                 {
@@ -107,6 +106,16 @@ public class Snack
                 }
             }
         }
+    }
+
+    //Sends a message in the Slack channel specified in the settings file
+    private void sendSlackMessage(String message)
+    {
+        //Get the channel that we are supposed to send messages to
+        SlackChannel slackChannel = session.findChannelByName(channel);
+
+        //Send the alert message to that channel
+        session.sendMessage(slackChannel,message);
     }
 
     private boolean loadSettings(File file)
@@ -153,6 +162,11 @@ public class Snack
             //If the settings file doesnt exist, create it and set the default values
             try
             {
+                //If the "Snack" directory doesnt exist it needs to be created
+                File directory = new File(Minecraft.getMinecraft().mcDataDir,"mods/Snack");
+                if(!directory.exists())
+                    directory.mkdir();
+
                 file.createNewFile();
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file));
                 writer.write("token=PLACEHOLDER");
