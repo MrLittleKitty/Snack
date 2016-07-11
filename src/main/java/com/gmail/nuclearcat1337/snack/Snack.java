@@ -29,7 +29,8 @@ public class Snack
     public static final String MODNAME = "Snack";
     public static final String MODVERSION = "1.0.0";
 
-    private static final Pattern snitchAlertPattern = Pattern.compile("\\s*\\*\\s*([^\\s]*)\\s\\bentered snitch at\\b\\s*([^\\s]*)\\s\\[([^\\s]*)\\s([-\\d]*)\\s([-\\d]*)\\s([-\\d]*)\\]");
+    private static final Pattern snitchAlertPattern =
+            Pattern.compile("\\s*\\*\\s*([^\\s]*)\\s\\b(?:entered snitch at|logged out in snitch at|logged in to snitch at)\\b\\s*([^\\s]*)\\s\\[([^\\s]*)\\s([-\\d]*)\\s([-\\d]*)\\s([-\\d]*)\\]");
     private static final Logger logger = Logger.getLogger(MODID);
 
     private SlackSession session = null;
