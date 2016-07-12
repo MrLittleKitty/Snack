@@ -33,6 +33,7 @@ public class Snack
     public static final String MODVERSION = "1.0.0";
     private static final Logger logger = Logger.getLogger(MODID);
 
+    //Constants for the settings file that represent values for the mod
     private static final String PLACEHOLDER = "PLACEHOLDER";
     private static final String SETTINGS_SLACK_TOKEN = "slack-token";
     private static final String SETTINGS_SLACK_CHANNEL = "slack-channel";
@@ -79,7 +80,7 @@ public class Snack
         try
         {
             //If we loaded the necessary data to create a slack session
-            if(slackToken != null && slackSession != null)
+            if(slackToken != null && slackChannel != null)
             {
                 //Create the Slack session
                 slackSession = SlackSessionFactory.createWebSocketSlackSession(slackToken);
@@ -89,6 +90,8 @@ public class Snack
 
                 //Send a message in the slack channel to alert that we've started up the mod
                 sendSlackMessage("A client using Snack has started and connected to this channel.");
+
+                logger.info("[Snack] Successfully connected to Slack");
             }
         }
         catch (IOException e)
@@ -108,6 +111,8 @@ public class Snack
             {
                 //Create the Discord session
                 discordSession = new ClientBuilder().withToken(discordToken).login();
+
+                logger.info("[Snack] Successfully connected to Discord");
             }
         }
         catch (DiscordException e)
@@ -124,8 +129,6 @@ public class Snack
             return;
 
         MinecraftForge.EVENT_BUS.register(this);
-
-        logger.info("[Snack] Successfully completed Snack setup and connected to Slack");
     }
 
     @SubscribeEvent
@@ -266,6 +269,8 @@ public class Snack
 
                 file.createNewFile();
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+
+                //Write out all the default values for the tokens and channels
                 writer.write(SETTINGS_SLACK_TOKEN+"="+PLACEHOLDER);
                 writer.write(System.lineSeparator());
                 writer.write(SETTINGS_SLACK_CHANNEL+"="+PLACEHOLDER);
@@ -274,6 +279,8 @@ public class Snack
                 writer.write(System.lineSeparator());
                 writer.write(SETTINGS_DISCORD_CHANNEL+"="+PLACEHOLDER);
                 writer.flush();
+
+                //Always remember to close your asset streams, kids.
                 writer.close();
             }
             catch (IOException e)
